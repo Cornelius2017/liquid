@@ -15,13 +15,13 @@ module Liquid
     attr_reader :scopes, :errors, :registers, :environments, :resource_limits
     attr_accessor :exception_renderer, :template_name, :partial, :global_filter, :strict_variables, :strict_filters
 
-    def initialize(environments = {}, outer_scope = {}, registers = {}, rethrow_errors = false, resource_limits = nil)
+    def initialize(environments = {}, outer_scope = {}, registers = {}, rethrow_errors = false, resource_limits = nil, strict = false)
       @environments     = [environments].flatten
       @scopes           = [(outer_scope || {})]
       @registers        = registers
       @errors           = []
       @partial          = false
-      @strict_variables = false
+      @strict_variables = strict
       @resource_limits  = resource_limits || ResourceLimits.new(Template.default_resource_limits)
       squash_instance_assigns_with_environments
 

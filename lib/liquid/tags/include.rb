@@ -41,6 +41,7 @@ module Liquid
     end
 
     def render(context)
+
       template_name = context.evaluate(@template_name_expr)
       raise ArgumentError.new(options[:locale].t("errors.argument.include")) unless template_name
 
@@ -50,7 +51,11 @@ module Liquid
       variable = if @variable_name_expr
         context.evaluate(@variable_name_expr)
       else
-        context.find_variable(template_name)
+        begin
+          context.find_variable(template_name)
+        rescue Liquid::UndefinedVariable
+          nil
+        end
       end
 
       old_template_name = context.template_name
